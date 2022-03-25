@@ -32,51 +32,96 @@ SOFTWARE.
 
 ///   NOTES   ///
 
-// Canvas size will be A4 at 72 ppi
-var totalWidth = 595;
-var totalHeight = 842;
-
-var maxGuassLength = Math.sqrt((totalWidth)**2+(totalHeight)**2);
+// Canvas size will be A4
+var totalWidth = 842;
+var totalHeight = 595;
 
 function setup() {
-    
+    pixelDensity(5);
     createCanvas(totalWidth, totalHeight);
-    background(240);
-    
-    var transX = 300;
-    var transY = 400;
-    var angle = PI/3.0;
-    var gaussCurve = arraysEqual(100, 30, 0, -maxGuassLength/2, maxGuassLength/2);
-    
-    var c = color(66, 135, 245);
-    // Draw rectangle.
+    background(255);
+    angleMode(DEGREES);
+
+    // Generate random variables.
+    var maxGuassLength = dist(0, 0, totalWidth, totalHeight)*2;
+    // Color options from https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51
+    var colorOptions = [
+        [38, 70, 83], [42, 157, 143], [233, 196, 106],
+        [244, 162, 97], [231, 111, 81]
+    ];
+
+    drawGaussian(maxGuassLength, colorOptions);
+
+}
+
+function genGaussParams() {
+    var prefactor = random(25, 200);
+    var sigma = random(5, 100);
+    var gaussCenterX = random((1/3)*totalWidth, (2/3)*totalWidth);
+    var gaussCenterY = random((1/3)*totalHeight, (2/3)*totalHeight);
+    var angle = random(0, 360);
+    return [prefactor, sigma, gaussCenterX, gaussCenterY, angle];
+}
+
+function drawGaussian(maxGuassLength, colorOptions) {
+    let prefactor, sigma, gaussCenterX, gaussCenterY, angle;
+    [prefactor, sigma, gaussCenterX, gaussCenterY, angle] = genGaussParams()
+
+    console.log('Gaussian prefactor: ', prefactor);
+    console.log('Gaussian sigma: ', sigma);
+    console.log('Gaussian center: ', gaussCenterX, ', ', gaussCenterY);
+    console.log('Gaussian rotation: ', angle, ' degrees');
+
+    var cAboveValue = random(colorOptions);
+    var cAbove = color(cAboveValue);
+    var colorOptionsRemaining = [];
+    for (let i = 0; i < colorOptions.length; i++) {
+        if (colorOptions[i] != cAboveValue) {
+            colorOptionsRemaining.push(colorOptions[i]);
+        }
+    }
+    var cBelow = random(colorOptionsRemaining)
+
+    var gaussCurve = computeGaussian(
+        prefactor,
+        sigma, 0, -maxGuassLength/2, maxGuassLength/2
+    );
+
+    // Draw below rectangle.
     push();
-    stroke(c);
-    fill(c);
-    //translate(-maxGuassLength/2, 0);
-    translate(transX, transY);
+    strokeWeight(1);
+    stroke(cAbove);
+    fill(cAbove);
+    translate(gaussCenterX, gaussCenterY);
     rotate(angle);
-    //rect(0, 0, maxGuassLength, -maxGuassLength);
-    rect(0, 0, 100, -100);
+    rect(-maxGuassLength/2, 0, maxGuassLength, maxGuassLength);
+    pop();
+    
+    // Draw above rectangle.
+    push();
+    strokeWeight(1);
+    stroke(cBelow);
+    fill(cBelow);
+    translate(gaussCenterX, gaussCenterY);
+    rotate(angle);
+    rect(-maxGuassLength/2, 0, maxGuassLength, -maxGuassLength);
     pop();
 
     // Draw Gaussian curve.
     push();
-    strokeWeight(4);
+    strokeWeight(6);
     beginShape();
-    fill(c);
+    stroke(255);
+    fill(cBelow);
+    translate(gaussCenterX, gaussCenterY);
+    rotate(angle);
     for (let i = 0; i < gaussCurve[0].length; i++) {
         let x = gaussCurve[0][i];
         let y = gaussCurve[1][i];
         curveVertex(x, y);
     }
-    translate(transX, transY);
-    rotate(angle);
     endShape();
     pop();
-
-    strokeWeight(10);
-    point(300, 600);
 }
 
 /**
@@ -105,7 +150,7 @@ function linspace(startValue, stopValue, size) {
  * @param {float} numXValues
  * @returns {array}
  */
-function arraysEqual(prefactor, sigma, mu, xMin, xMax, numXValues=5000) {
+function computeGaussian(prefactor, sigma, mu, xMin, xMax, numXValues=10000) {
     var xValues = linspace(xMin, xMax, numXValues);
     var yValues = [];
     for (let i = 0; i < xValues.length; i++) {
