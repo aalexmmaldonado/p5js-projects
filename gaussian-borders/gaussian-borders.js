@@ -44,14 +44,33 @@ function setup() {
 
     // Generate random variables.
     var maxGuassLength = dist(0, 0, totalWidth, totalHeight)*2;
+    /*
     // Color options from https://coolors.co/palette/264653-2a9d8f-e9c46a-f4a261-e76f51
     var colorOptions = [
         [38, 70, 83], [42, 157, 143], [233, 196, 106],
         [244, 162, 97], [231, 111, 81]
     ];
+    */
+    /*
+    // Color options from https://coolors.co/palette/fbf8cc-fde4cf-ffcfd2-f1c0e8-cfbaf0-a3c4f3-90dbf4-8eecf5-98f5e1-b9fbc0
+    var colorOptions = [
+        [251, 248, 204], [253, 228, 207], [255, 207, 210], [241, 192, 232],
+        [207, 186, 240], [163, 196, 243], [144, 219, 244], [142, 236, 245],
+        [152, 245, 225], [185, 251, 192]
+    ];
+    */
+    // Color options from https://coolors.co/palette/f94144-f3722c-f8961e-f9c74f-90be6d-43aa8b-577590
+    globalThis.colorOptions = [
+        [249, 65, 68], [243, 114, 44], [248, 150, 30], [249, 199, 79],
+        [22, 50, 59], [67, 170, 139], [87, 117, 144]
+    ];
 
     drawGaussian(maxGuassLength, colorOptions);
+}
 
+function mouseClicked() {
+    var maxGuassLength = dist(0, 0, totalWidth, totalHeight)*2;
+    drawGaussian(maxGuassLength, colorOptions);
 }
 
 function genGaussParams() {
