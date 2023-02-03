@@ -36,12 +36,84 @@ SOFTWARE.
 var totalWidth = 842;
 var totalHeight = 595;
 
+
+var allDots = [];
+const minDotWidth = 10;
+const maxDotWidth = 30;
+var availableColorScheme = {
+    "rainbow": [
+        "#FF8585",
+        "#FFC885",
+        "#FCFF99",
+        "#AAFF99",
+        "#9BF6FF",
+        "#99C0FF",
+        "#A899FF",
+        "#FF99FF",
+    ]
+};
+var colorSchemeLabel = "rainbow";
+
+
+
+
+
 function setup() {
     pixelDensity(5);
     createCanvas(totalWidth, totalHeight);
     background(255);
     angleMode(DEGREES);
 
-    
+    addDots(totalWidth, totalHeight, 50, availableColorScheme[colorSchemeLabel]);
 }
 
+
+
+
+/**
+ * Create all dots of "paint" and draw them onto the canvas.
+ * @param {*} canvasWidth 
+ * @param {*} canvasHeight 
+ * @param {*} nDots 
+ * @param {*} availableColors 
+ * @returns 
+ */
+function addDots(canvasWidth, canvasHeight, nDots, availableColors) {
+    for (i = 0; i < nDots; i++){
+        randomOrigin = new Array(
+            random(maxDotWidth, canvasWidth-maxDotWidth),
+            random(maxDotWidth, canvasHeight-maxDotWidth)
+        );
+        randomWidth = random(minDotWidth, maxDotWidth);
+        colorIndex = Math.floor(Math.random() * availableColors.length);
+        colorSelection = availableColors[colorIndex];
+        newDot = new Dot(randomOrigin, randomWidth, 20, colorSelection);
+        newDot.put();
+        allDots.push(newDot);
+    }
+
+    return allDots;
+}
+
+
+/**
+ * A simple dot object to represent paint
+ */
+class Dot {
+
+    constructor(origin, dotWidth, smearLength, colorSelection) {
+        this.origin = origin;
+        this.dotWidth = dotWidth;
+        this.smearLength = smearLength;
+        this.colorSelection = colorSelection;
+    }
+
+    /**
+     * Draw the dot of "paint".
+     */
+    put() {
+        noStroke();
+        fill(this.colorSelection);
+        circle(...this.origin, this.dotWidth);
+    }
+}
