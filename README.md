@@ -9,3 +9,4 @@ You can see the current&mdash;possibly broken&mdash;version of the projects belo
 
 - [Clock of Clocks](https://www.aalexmmaldonado.com/p5js-projects/clock-of-clocks/index.html)
 - [Gaussian Borders](https://www.aalexmmaldonado.com/p5js-projects/gaussian-borders/index.html)
+- [Smeart](https://www.aalexmmaldonado.com/p5js-projects/smeart/index.html)
