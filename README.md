@@ -7,6 +7,6 @@ Honestly, this mainly helps me figure out what I broke when ~~desperately trying
 
 You can see the current&mdash;possibly broken&mdash;version of the projects below.
 
-- [Clock of Clocks](https://www.aalexmmaldonado.com/p5js-projects/clock-of-clocks/index.html)
-- [Gaussian Borders](https://www.aalexmmaldonado.com/p5js-projects/gaussian-borders/index.html)
-- [Smeart](https://www.aalexmmaldonado.com/p5js-projects/smeart/index.html)
+- [Clock of Clocks](https://portfolio.aalexmmaldonado.com/clock-of-clocks/index.html)
+- [Gaussian Borders](https://portfolio.aalexmmaldonado.com/gaussian-borders/index.html)
+- [Smeart](https://portfolio.aalexmmaldonado.com/smeart/index.html)
